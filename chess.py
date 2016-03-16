@@ -5,9 +5,9 @@ with dimensions MxN where none of the pieces
 is in a position to take any of the others.
 """
 import optparse
+import time
 from board import Board
 from pieces import King, Queen, Bishop, Rook, Knight
-import time
 
 
 def main():
@@ -38,9 +38,11 @@ def main():
     knights = options.knights
     rows = options.rows
     columns = options.columns
-    print "Initializing board with %d rows and %d columns (%dx%d)" % (rows, columns, rows, columns)
-    print "Placing kings: %d, queens: %s, bishops: %d, rooks: %s, knights: %d"\
-        % (kings, queens, bishops, rooks, knights)
+    print "Initializing board with %d rows and %d columns (%dx%d)" %\
+          (rows, columns, rows, columns)
+    print "Setting kings: %d, queens: %s, " \
+          "bishops: %d, rooks: %s, knights: %d" %\
+          (kings, queens, bishops, rooks, knights)
 
     pieces = []
     pieces.extend([King() for _ in xrange(kings)])

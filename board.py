@@ -2,8 +2,9 @@
 Includes classes that represent the main
 elements of the problem: Board and Cell
 """
-from exceptions import InvalidSetupException, InvalidArgumentException, InvalidMoveException
 import random
+from exceptions import InvalidSetupException, InvalidArgumentException,\
+    InvalidMoveException
 
 
 class Cell(object):
@@ -66,8 +67,10 @@ class Board(object):
         """
         Initializes A Board instance with MxN dimensions and a list of pieces.
 
-        :param rows: An Integer that represents the number of rows of the board.
-        :param columns: An Integer that represents the number of columns of the board.
+        :param rows: An Integer that represents the
+        number of rows of the board.
+        :param columns: An Integer that represents the
+        number of columns of the board.
         :param pieces: A list that holds the chess pieces on the board.
         :return: A new instance of Board class.
         """
@@ -80,7 +83,9 @@ class Board(object):
             piece.board = self
             row, column = self.get_next_available_position()
             if row is None or column is None:
-                raise InvalidSetupException("pieces number exceed the board capacity")
+                raise InvalidSetupException(
+                    "pieces number exceed the board capacity"
+                )
             self[row, column] = piece
         self._cache = {self.get_hash(): True}
         self.reset_position()
@@ -90,7 +95,8 @@ class Board(object):
     @property
     def cache(self):
         """
-        Returns the caching hash table that stores the past configurations on the board.
+        Returns the caching hash table that stores the
+        past configurations on the board.
         :return: a dict that stores the past configurations on the board.
         """
         return self._cache
@@ -103,9 +109,13 @@ class Board(object):
         """
         row, column = pos
         if row >= self.rows or abs(row) > self.rows:
-            raise InvalidArgumentException("piece row number is bigger than board row capacity")
+            raise InvalidArgumentException(
+                "piece row number is bigger than board row capacity"
+            )
         if column >= self.columns or abs(column) > self.columns:
-            raise InvalidArgumentException("piece column number is bigger than board column capacity")
+            raise InvalidArgumentException(
+                "piece column number is bigger than board column capacity"
+            )
         return self.matrix[row][column]
 
     def __setitem__(self, pos, value):
@@ -117,19 +127,26 @@ class Board(object):
         """
         row, column = pos
         if row >= self.rows:
-            raise InvalidMoveException("piece row number is bigger than board row capacity")
+            raise InvalidMoveException(
+                "piece row number is bigger than board row capacity"
+            )
         if column >= self.columns:
-            raise InvalidMoveException("piece column number is bigger than board column capacity")
+            raise InvalidMoveException(
+                "piece column number is bigger than board column capacity"
+            )
         cell = self.matrix[row][column]
         if value and not cell.available:
-            raise InvalidMoveException("cannot place the piece, spot already occupied")
+            raise InvalidMoveException(
+                "cannot place the piece, spot already occupied"
+            )
         cell.piece = value
         if value:
             value.set_position(row, column)
 
     def __str__(self):
         """
-        Prints the board with its pieces and all the attacks on boards different positions.
+        Prints the board with its pieces and all the
+        attacks on boards different positions.
         :return: A string.
         """
         parts = []
@@ -144,18 +161,26 @@ class Board(object):
         """
         parts = []
         for row in self.matrix:
-            parts.append(' '.join([str(cell.piece) if not cell.available else "0" for cell in row]))
+            parts.append(' '.join(
+                [str(cell.piece)
+                 if not cell.available
+                 else "0" for cell in row]))
         return '\n'.join(parts) + '\n'
 
     def get_hash(self, index=None, row=None, column=None):
         """
-        Returns a signature that represents a certain distribution of the pieces on the board.
-        It allows overriding a certain piece by passing the index, row, column parameters.
+        Returns a signature that represents a certain
+        distribution of the pieces on the board.
+        It allows overriding a certain piece by passing the
+        index, row, column parameters.
         :param index: An integer that represents the piece
         that needs to replaced by the (row, column) piece.
-        :param row: An integer that represents the row of the replacing piece.
-        :param column: An integer that represents the column of the replacing piece.
-        :return: a Long value that represents the distribution of the pieces on the board.
+        :param row: An integer that represents the
+        row of the replacing piece.
+        :param column: An integer that represents the
+        column of the replacing piece.
+        :return: a Long value that represents the
+        distribution of the pieces on the board.
         """
         result = 0L
         step = max(self.rows, self.columns).bit_length()
@@ -164,13 +189,17 @@ class Board(object):
             test = self.pieces[index]
         for y_axis in self.matrix:
             for cell in y_axis:
-                if not cell.available or (cell.row == row and cell.column == column):
-                    if test is not None and cell.row == row and cell.column == column:
+                if not cell.available or\
+                        (cell.row == row and cell.column == column):
+                    if test is not None and\
+                            cell.row == row and cell.column == column:
                         result <<= step
                         result |= row + 1
                         result <<= step
                         result |= column + 1
-                    elif not test or (cell.row != test.row or cell.column != test.column):
+                    elif not test or\
+                            cell.row != test.row or\
+                            cell.column != test.column:
                         result <<= step
                         result |= cell.row + 1
                         result <<= step
@@ -246,7 +275,9 @@ class Board(object):
         for piece in pieces:
             row, column = self.get_next_available_position(lap)
             if row is None or column is None:
-                raise InvalidSetupException("pieces number exceed the board capacity")
+                raise InvalidSetupException(
+                    "pieces number exceed the board capacity"
+                )
             self[row, column] = piece
         self._cache[self.get_hash()] = True
         return True
@@ -274,19 +305,26 @@ class Board(object):
                 for move in moves:
                     if not piece.can_move(index, *move):
                         continue
-                    if not len(destinations) or self[move[0], move[1]].attacks <\
-                            self[destinations[0][0], destinations[0][1]].attacks:
+
+                    if not len(destinations) or\
+                            self[move[0], move[1]].attacks <\
+                            self[destinations[0][0],
+                                 destinations[0][1]].attacks:
                         destinations = [move]
-                    elif len(destinations) and self[move[0], move[1]].attacks ==\
-                            self[destinations[0][0], destinations[0][1]].attacks:
+                    elif len(destinations) and\
+                            self[move[0], move[1]].attacks ==\
+                            self[destinations[0][0],
+                                 destinations[0][1]].attacks:
                         destinations.append(move)
+
                 for destination in destinations:
                     any_moved = True
                     piece.move(*destination)
                     self.calculate_attacks()
                     self._cache[self.get_hash()] = True
                     board_hash = self.get_hash()
-                    if not self.has_attacked_piece() and board_hash not in solutions:
+                    if not self.has_attacked_piece() and\
+                            board_hash not in solutions:
                         # print "solution found!"
                         # print self.print_board()
                         solutions.append(board_hash)

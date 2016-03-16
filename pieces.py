@@ -40,7 +40,9 @@ class Piece(object):
         if not self.board:
             raise InvalidSetupException("piece is not set to a board")
         if value >= self.board.rows:
-            raise InvalidMoveException("piece row number is bigger than board row capacity")
+            raise InvalidMoveException(
+                "piece row number is bigger than board row capacity"
+            )
         self._row = value
 
     @property
@@ -63,7 +65,9 @@ class Piece(object):
         if not self.board:
             raise InvalidSetupException("piece is not set to a board")
         if value >= self.board.columns:
-            raise InvalidMoveException("piece column number is bigger than board column capacity")
+            raise InvalidMoveException(
+                "piece column number is bigger than board column capacity"
+            )
         self._column = value
 
     def set_position(self, row, column):
@@ -100,7 +104,8 @@ class Piece(object):
         :param index: An integer that represents the index
         of the piece in the board piece set.
         :param row: An integer that represents the row of the tested position.
-        :param column: An integer that represents the column of the tested position.
+        :param column: An integer that represents the column
+        of the tested position.
         :return: A boolean.
         """
         cell = self.board[row, column]
@@ -114,7 +119,8 @@ class Piece(object):
         """
         Moves the piece to the passed position.
         :param row: An integer that represents the destination position's row.
-        :param column: An integer that represents the destination position's column.
+        :param column: An integer that represents
+        the destination position's column.
         :return: None.
         """
         if not self.board:
@@ -140,7 +146,8 @@ class King(Piece):
 
     def __str__(self):
         """
-        :return: Returns a string representation that differentiate the piece's type.
+        :return: Returns a string representation that
+        differentiate the piece's type.
         """
         return "K"
 
@@ -189,7 +196,8 @@ class Queen(Piece):
 
     def __str__(self):
         """
-        :return: Returns a string representation that differentiate the piece's type.
+        :return: Returns a string representation that
+        differentiate the piece's type.
         """
         return "Q"
 
@@ -220,12 +228,14 @@ class Queen(Piece):
         # add all the cells in the piece's diagonals
         for x_axis in xrange(0, row + column + 1):
             y_axis = row + column - x_axis
-            if x_axis < columns and y_axis < rows and x_axis != column and y_axis != row:
+            if x_axis < columns and y_axis < rows and\
+                    x_axis != column and y_axis != row:
                 moves.append((y_axis, x_axis))
 
         for y_axis in xrange(row - column, max(rows, columns)):
             x_axis = y_axis - row + column
-            if 0 <= x_axis < columns and 0 <= y_axis < rows and x_axis != column and y_axis != row:
+            if 0 <= x_axis < columns and 0 <= y_axis < rows and\
+                    x_axis != column and y_axis != row:
                 moves.append((y_axis, x_axis))
 
         return moves
@@ -246,7 +256,8 @@ class Queen(Piece):
         :param index: An integer that represents the index
         of the piece in the board piece set.
         :param row: An integer that represents the row of the tested position.
-        :param column: An integer that represents the column of the tested position.
+        :param column: An integer that represents the
+        column of the tested position.
         :return: A boolean.
         """
         if column != self.column and self.board[row, column].taken:
@@ -267,7 +278,8 @@ class Bishop(Piece):
 
     def __str__(self):
         """
-        :return: Returns a string representation that differentiate the piece's type.
+        :return: Returns a string representation that
+        differentiate the piece's type.
         """
         return "B"
 
@@ -286,12 +298,14 @@ class Bishop(Piece):
         # add all the cells in the piece's diagonals
         for x_axis in xrange(0, row + column + 1):
             y_axis = row + column - x_axis
-            if x_axis < columns and y_axis < rows and x_axis != column and y_axis != row:
+            if x_axis < columns and y_axis < rows and\
+                    x_axis != column and y_axis != row:
                 moves.append((y_axis, x_axis))
 
         for y_axis in xrange(row - column, max(rows, columns)):
             x_axis = y_axis - row + column
-            if 0 <= x_axis < columns and 0 <= y_axis < rows and x_axis != column and y_axis != row:
+            if 0 <= x_axis < columns and 0 <= y_axis < rows and\
+                    x_axis != column and y_axis != row:
                 moves.append((y_axis, x_axis))
 
         return moves
@@ -310,7 +324,8 @@ class Rook(Piece):
 
     def __str__(self):
         """
-        :return: Returns a string representation that differentiate the piece's type.
+        :return: Returns a string representation that
+        differentiate the piece's type.
         """
         return "R"
 
@@ -356,7 +371,8 @@ class Rook(Piece):
         :param index: An integer that represents the index
         of the piece in the board piece set.
         :param row: An integer that represents the row of the tested position.
-        :param column: An integer that represents the column of the tested position.
+        :param column: An integer that represents the
+        column of the tested position.
         :return: A boolean.
         """
         if column != self.column and self.board[row, column].taken:
@@ -377,7 +393,8 @@ class Knight(Piece):
 
     def __str__(self):
         """
-        :return: Returns a string representation that differentiate the piece's type.
+        :return: Returns a string representation that
+        differentiate the piece's type.
         """
         return "N"
 
