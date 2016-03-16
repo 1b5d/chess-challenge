@@ -6,7 +6,7 @@ is in a position to take any of the others.
 """
 import optparse
 import time
-from exceptions import InvalidSetupException, InvalidArgumentException,\
+from chess_exceptions import InvalidSetupException, InvalidArgumentException,\
     InvalidMoveException, ChessException
 from board import Board
 from pieces import King, Queen, Bishop, Rook, Knight

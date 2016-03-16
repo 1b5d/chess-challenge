@@ -3,7 +3,7 @@ Includes classes that represent the different types
 of pieces that can be placed on the board, like:
 King, Queen, Bishop, Rook, Knight.
 """
-from exceptions import InvalidSetupException, InvalidMoveException
+from chess_exceptions import InvalidSetupException, InvalidMoveException
 
 
 class Piece(object):

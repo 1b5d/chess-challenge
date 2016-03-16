@@ -3,7 +3,7 @@ Includes classes that represent the main
 elements of the problem: Board and Cell
 """
 import random
-from exceptions import InvalidSetupException, InvalidArgumentException,\
+from chess_exceptions import InvalidSetupException, InvalidArgumentException,\
     InvalidMoveException
 
 
