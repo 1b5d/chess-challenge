@@ -6,14 +6,16 @@ is in a position to take any of the others.
 """
 import optparse
 import time
+from exceptions import InvalidSetupException, InvalidArgumentException,\
+    InvalidMoveException, ChessException
 from board import Board
 from pieces import King, Queen, Bishop, Rook, Knight
 
 
-def main():
+def parse_args():
     """
-    Main function that initializes the program
-    :return: None
+    Parse the command-line options of the game.
+    :return: Tuple (Any, Any)
     """
     parser = optparse.OptionParser("usage: %prog [options] pieces list")
     parser.add_option("-m", "-m", dest="rows", default=8, type="int",
@@ -30,7 +32,15 @@ def main():
                       help="Number of rooks on the board")
     parser.add_option("-N", "--knights", dest="knights", default=0, type="int",
                       help="Number of knights on the board")
-    (options, _) = parser.parse_args()
+    return parser.parse_args()
+
+
+def main():
+    """
+    Main function that initializes the program
+    :return: None
+    """
+    (options, _) = parse_args()
     kings = options.kings
     queens = options.queens
     bishops = options.bishops
@@ -50,11 +60,28 @@ def main():
     pieces.extend([Bishop() for _ in xrange(bishops)])
     pieces.extend([Rook() for _ in xrange(rooks)])
     pieces.extend([Knight() for _ in xrange(knights)])
-    board = Board(rows, columns, pieces)
 
     start_time = time.time()
-    solutions = board.find_independent_configurations()
-    print "%d solutions found!" % len(solutions)
+
+    try:
+        board = Board(rows, columns, pieces)
+
+        solutions = board.find_independent_configurations()
+        print "%d solutions found!" % len(solutions)
+
+    except InvalidSetupException, exp:
+        print "Bad setup of board/pieces, error was: {%s}" % exp.message
+    except InvalidMoveException, exp:
+        print "Invalid move was initiated, error was: {%s}" % exp.message
+    except InvalidArgumentException, exp:
+        print "Invalid argument was passed, error was: {%s}" % exp.message
+    except ChessException, exp:
+        print "Something wrong happened in the game, error was: {%s}" %\
+            exp.message
+    except BaseException, exp:
+        print "Something wrong happened in the game, error was: {%s}" %\
+            exp.message
+
     end_time = time.time()
 
     print "time: %.2f s" % (end_time - start_time)
