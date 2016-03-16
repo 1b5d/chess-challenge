@@ -3,6 +3,7 @@ Includes classes that represent the different types
 of pieces that can be placed on the board, like:
 King, Queen, Bishop, Rook, Knight.
 """
+from exceptions import InvalidSetupException, InvalidMoveException
 
 
 class Piece(object):
@@ -26,7 +27,7 @@ class Piece(object):
         :return: An integer that represents the row of the piece.
         """
         if not self.board:
-            raise RuntimeError("Error: piece is not set to a board")
+            raise InvalidSetupException("piece is not set to a board")
         return self._row
 
     @row.setter
@@ -37,9 +38,9 @@ class Piece(object):
         :return: None.
         """
         if not self.board:
-            raise RuntimeError("Error: piece is not set to a board")
+            raise InvalidSetupException("piece is not set to a board")
         if value >= self.board.rows:
-            raise RuntimeError("Error: piece row number is bigger than board row capacity")
+            raise InvalidMoveException("piece row number is bigger than board row capacity")
         self._row = value
 
     @property
@@ -49,7 +50,7 @@ class Piece(object):
         :return: An integer that represents the column of the piece.
         """
         if not self.board:
-            raise RuntimeError("Error: piece is not set to a board")
+            raise InvalidSetupException("piece is not set to a board")
         return self._column
 
     @column.setter
@@ -60,9 +61,9 @@ class Piece(object):
         :return: None.
         """
         if not self.board:
-            raise RuntimeError("Error: piece is not set to a board")
+            raise InvalidSetupException("piece is not set to a board")
         if value >= self.board.columns:
-            raise RuntimeError("Error: piece column number is bigger than board column capacity")
+            raise InvalidMoveException("piece column number is bigger than board column capacity")
         self._column = value
 
     def set_position(self, row, column):
@@ -81,7 +82,7 @@ class Piece(object):
         :return: A list of tuples that represent the legal available moves.
         """
         if not self.board:
-            raise RuntimeError("Error: piece is not set to a board")
+            raise InvalidSetupException("piece is not set to a board")
         return []
 
     def update_column_status(self, taken=True):
@@ -117,7 +118,7 @@ class Piece(object):
         :return: None.
         """
         if not self.board:
-            raise RuntimeError("Error: piece is not set to a board")
+            raise InvalidSetupException("piece is not set to a board")
 
         self.update_column_status(False)
         if not [self.row, self.column].count(None):

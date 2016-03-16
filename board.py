@@ -2,6 +2,7 @@
 Includes classes that represent the main
 elements of the problem: Board and Cell
 """
+from exceptions import InvalidSetupException, InvalidArgumentException, InvalidMoveException
 import random
 
 
@@ -79,7 +80,7 @@ class Board(object):
             piece.board = self
             row, column = self.get_next_available_position()
             if row is None or column is None:
-                raise RuntimeError("Error: Pieces number exceed the board capacity")
+                raise InvalidSetupException("pieces number exceed the board capacity")
             self[row, column] = piece
         self._cache = {self.get_hash(): True}
         self.reset_position()
@@ -102,9 +103,9 @@ class Board(object):
         """
         row, column = pos
         if row >= self.rows or abs(row) > self.rows:
-            raise RuntimeError("Error: piece row number is bigger than board row capacity")
+            raise InvalidArgumentException("piece row number is bigger than board row capacity")
         if column >= self.columns or abs(column) > self.columns:
-            raise RuntimeError("Error: piece column number is bigger than board column capacity")
+            raise InvalidArgumentException("piece column number is bigger than board column capacity")
         return self.matrix[row][column]
 
     def __setitem__(self, pos, value):
@@ -116,12 +117,12 @@ class Board(object):
         """
         row, column = pos
         if row >= self.rows:
-            raise RuntimeError("Error: piece row number is bigger than board row capacity")
+            raise InvalidMoveException("piece row number is bigger than board row capacity")
         if column >= self.columns:
-            raise RuntimeError("Error: piece column number is bigger than board column capacity")
+            raise InvalidMoveException("piece column number is bigger than board column capacity")
         cell = self.matrix[row][column]
         if value and not cell.available:
-            raise RuntimeError("Error: cannot place the piece, spot already occupied")
+            raise InvalidMoveException("cannot place the piece, spot already occupied")
         cell.piece = value
         if value:
             value.set_position(row, column)
@@ -245,7 +246,7 @@ class Board(object):
         for piece in pieces:
             row, column = self.get_next_available_position(lap)
             if row is None or column is None:
-                raise RuntimeError("Error: Pieces number exceed the board capacity")
+                raise InvalidSetupException("pieces number exceed the board capacity")
             self[row, column] = piece
         self._cache[self.get_hash()] = True
         return True
