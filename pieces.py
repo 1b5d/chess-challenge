@@ -39,9 +39,10 @@ class Piece(object):
         """
         if not self.board:
             raise InvalidSetupException("piece is not set to a board")
-        if value >= self.board.rows:
+
+        if value >= self.board.rows or value < 0:
             raise InvalidMoveException(
-                "piece row number is bigger than board row capacity"
+                "piece row number is outside the board"
             )
         self._row = value
 
@@ -64,9 +65,9 @@ class Piece(object):
         """
         if not self.board:
             raise InvalidSetupException("piece is not set to a board")
-        if value >= self.board.columns:
+        if value >= self.board.columns or value < 0:
             raise InvalidMoveException(
-                "piece column number is bigger than board column capacity"
+                "piece column number is outside the board"
             )
         self._column = value
 
@@ -108,6 +109,9 @@ class Piece(object):
         of the tested position.
         :return: A boolean.
         """
+        if not self.board:
+            raise InvalidSetupException("piece is not set to a board")
+
         cell = self.board[row, column]
         if not cell.available:
             return False
