@@ -1,3 +1,8 @@
+"""
+Includes test classes for the different types
+of pieces.
+"""
+
 import unittest
 from pieces import Piece, King, Queen, Bishop, Rook, Knight
 from board import Board
