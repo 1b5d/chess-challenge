@@ -282,12 +282,14 @@ class Board(object):
         self._cache[self.get_hash()] = True
         return True
 
-    def find_independent_configurations(self):
+    def find_independent_configurations(self, verbose=False):
         """
         Finds all the unique configurations of the pieces
         on the board where none of the pieces
         is in a position to take any of the others.
 
+        :param verbose: decides whether to print execution
+        information while finding the configurations or not.
         :return: A list of all the unique configurations.
         """
         solutions = []
@@ -325,8 +327,8 @@ class Board(object):
                     board_hash = self.get_hash()
                     if not self.has_attacked_piece() and\
                             board_hash not in solutions:
-                        # print "solution found!"
-                        # print self.print_board()
+                        if verbose:
+                            print self.print_board()
                         solutions.append(board_hash)
             if not any_moved:
                 lap += 1

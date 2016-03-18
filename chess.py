@@ -66,7 +66,7 @@ def main():
     try:
         board = Board(rows, columns, pieces)
 
-        solutions = board.find_independent_configurations()
+        solutions = board.find_independent_configurations(True)
         print "%d solutions found!" % len(solutions)
 
     except InvalidSetupException, exp:
